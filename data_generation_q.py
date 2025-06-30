@@ -62,25 +62,16 @@ m.tmax = t1_year * year
 with h5py.File("data_generation.h5", "w") as h5f:
     time_dset = h5f.create_dataset("time", shape=(0,), maxshape=(None,), dtype=np.float64)
     q_dset = h5f.create_dataset("q", shape=(0, 2, ny, nx), maxshape=(None, 2, ny, nx), dtype=np.float64)
-    u_dset = h5f.create_dataset("u", shape=(0, 2, nx, ny), maxshape=(None, 2, nx, ny), dtype=np.float64)
-    v_dset = h5f.create_dataset("v", shape=(0, 2, nx, ny), maxshape=(None, 2, nx, ny), dtype=np.float64)
 
     for snapshot in m.run_with_snapshots(tsnapstart=t0_year * year, tsnapint=n_day * m.dt):
         current_time = np.array([m.t])
         q_snapshot = m.q.copy()  # Store potential vorticity
-        # Access u, v, p from the model
-        u = m.u.copy()
-        v = m.v.copy()
         # Resize datasets to append new data
         time_dset.resize((time_dset.shape[0] + 1,))
         q_dset.resize((q_dset.shape[0] + 1, 2, ny, nx))
-        u_dset.resize((u_dset.shape[0] + 1, 2, nx, ny))
-        v_dset.resize((v_dset.shape[0] + 1, 2, nx, ny))
-
         # Store data
         time_dset[-1] = current_time
         q_dset[-1] = q_snapshot
-        u_dset[-1] = u
-        v_dset[-1] = v
+
 
 print("Data collection completed.")
