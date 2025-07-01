@@ -81,7 +81,7 @@ x_net = input_tensor
 n_layers = 4
 for i in range(n_layers):
     act = 'gelu'
-    x_net = periodic_convolution(x_net, n_filters=64, kernel_size=5,
+    x_net = periodic_convolution(x_net, n_filters=32, kernel_size=5,
                                  activation=act, n_pad_rows=4, n_pad_cols=4)
 
 # Output layer
@@ -98,7 +98,7 @@ model.compile(optimizer=optimizer, loss="mse", metrics=["mae"])
 model.fit(x_train, y_train,
           validation_data=(x_val, y_val),
           epochs=100,
-          batch_size=8,
+          batch_size=32,
           verbose=2)
 
 y_pred = model.predict(x_val)  # or x_test
