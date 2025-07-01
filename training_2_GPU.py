@@ -83,7 +83,7 @@ for lr in learning_rates:
     input_tensor = keras.Input(shape=x.shape[1:])
     x_net = input_tensor
     for _ in range(n_layers):
-        x_net = periodic_convolution(x_net, n_filters=64, kernel_size=5,
+        x_net = periodic_convolution(x_net, n_filters=32, kernel_size=5,
                                      activation='gelu', n_pad_rows=4, n_pad_cols=4)
     x_net = periodic_convolution(x_net, n_filters=2, kernel_size=5,
                                  activation='linear', n_pad_rows=4, n_pad_cols=4)
@@ -97,7 +97,7 @@ for lr in learning_rates:
         x_train, y_train,
         validation_data=(x_val, y_val),
         epochs=100,
-        batch_size=8,
+        batch_size=32,
         verbose=1
     )
     
