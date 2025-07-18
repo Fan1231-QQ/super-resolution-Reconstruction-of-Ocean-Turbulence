@@ -97,7 +97,7 @@ model.compile(optimizer=optimizer, loss="mse", metrics=["mae"])
 
 model.fit(x_train, y_train,
           validation_data=(x_val, y_val),
-          epochs=100,
+          epochs=2000,
           batch_size=32,
           verbose=2)
 
