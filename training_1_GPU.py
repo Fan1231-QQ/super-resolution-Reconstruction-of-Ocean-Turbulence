@@ -103,7 +103,14 @@ model.fit(x_train, y_train,
 
 y_pred = model.predict(x_val)  # or x_test
 
-# Save data
+# ====== Compute validation metrics ======
+from sklearn.metrics import mean_squared_error, mean_absolute_error
+
+val_mse = mean_squared_error(y_val.flatten(), y_pred.flatten())
+
+print("Validation MSE:", val_mse)
+
+# ====== Save data ======
 import h5py
 import numpy as np
 
@@ -112,8 +119,9 @@ save_path = "prediction_results.h5"
 
 # Create and write to HDF5 file
 with h5py.File(save_path, "w") as h5f:
-    h5f.create_dataset("y_pred", data=y_pred)        # Predicted residual
-    h5f.create_dataset("x_val", data=x_val)          # Upsampled input
-    h5f.create_dataset("raw", data=raw[split_idx:])  # Corresponding ground truth (validation part)
+    h5f.create_dataset("y_pred", data=y_pred)         # Predicted residual
+    h5f.create_dataset("x_val", data=x_val)           # Upsampled input
+    h5f.create_dataset("raw", data=raw[split_idx:])   # Ground truth (val set)
+    h5f.create_dataset("val_mse", data=val_mse)       # Validation MSE
 
 print(f"Results saved as HDF5 file: {save_path}")
