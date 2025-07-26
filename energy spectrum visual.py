@@ -26,10 +26,11 @@ with h5py.File(file_path, "r") as h5f:
     print(f"Time shape: {time.shape}")
     total_rows = time.shape[0]
 
-# 读取初始时间步的数据
+# read data
 with h5py.File(file_path, "r") as h5f:
-    ui = jnp.array(h5f["u"][0]) # read initial u 
-    vi = jnp.array(h5f["v"][0])
+
+    ui = jnp.array(h5f["u"][:]).mean(axis=0)  # mean over time
+    vi = jnp.array(h5f["v"][:]).mean(axis=0)
 
     # 分离上下层并添加时间维度 (Nt = 1)
 u1 = ui[0:1]  # shape: (1, 512, 512)
